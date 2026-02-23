@@ -64,7 +64,7 @@ Desarrollar una plataforma web que facilite el acceso a la lectura digital media
 
 | Nombre                  | Rol principal              | Usuario GitHub     |
 |-------------------------|----------------------------|--------------------|
-| Santiago Sánchez Rojas  | Líder / Backend            | @tu-usuario        |
+| Santiago Sánchez Rojas  | Líder / Backend            | @piolin666satan    |
 | [Nombre 2]              | Frontend Lead              | @[usuario]         |
 | [Nombre 3]              | Backend / Base de datos    | @[usuario]         |
 | [Nombre 4]              | [rol]                      | @[usuario]         |
