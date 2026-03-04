@@ -78,60 +78,57 @@ Desarrollar una plataforma web que facilite el acceso a la lectura digital media
 
 ---
 
+---
+
 ## 🚀 Instrucciones de Instalación y Ejecución
 
-Sigue estos pasos para configurar el entorno de desarrollo y ejecutar el proyecto **Alquimia Literaria** localmente.
+Sigue estos pasos exactamente en el orden indicado para configurar el entorno de desarrollo y asegurar el cumplimiento de los requisitos técnicos:
 
-### Prerrequisitos
+### 1. Clonar el repositorio
 
-Asegúrate de tener instalado lo siguiente:
+Abre tu terminal y ejecuta el siguiente comando para obtener el código fuente:
 
-* **Java JDK 21:** Necesario para el backend. Verifica con `java -version`.
-* **Maven:** Gestor de proyectos Java. Verifica con `mvn -v`.
-* **PostgreSQL:** Versión 14 o superior.
-* **Node.js & npm:** (Solo para la carpeta del frontend).
-* **Git:** Para clonar el repositorio.
-
-### Pasos para la Instalación
-
-1.  **Clonar el repositorio**
-    ```bash
-    git clone [https://github.com/piolin666satan/biblioteca-digital-grupo-6.git](https://github.com/piolin666satan/biblioteca-digital-grupo-6.git)
-    cd biblioteca-digital-grupo-6
-    ```
-
-2.  **Configurar la Base de Datos**
-    Crea una base de datos en PostgreSQL llamada `alquimia_db`. Luego, ubica el archivo `src/main/resources/application.properties` (o crea un `application-dev.properties`) y configura tus credenciales:
-    ```properties
-    spring.datasource.url=jdbc:postgresql://localhost:5432/alquimia_db
-    spring.datasource.username=tu_usuario
-    spring.datasource.password=tu_contraseña
-    spring.jpa.hibernate.ddl-auto=update
-    ```
-
-3.  **Compilar y Ejecutar el Backend (Spring Boot)**
-    Desde la raíz del proyecto backend:
-    ```bash
-    mvn clean install
-    mvn spring-boot:run
-    ```
-
-4.  **Configurar y Ejecutar el Frontend (React)**
-    En una nueva terminal, navega a la carpeta del frontend:
-    ```bash
-    cd frontend-folder # Reemplaza con el nombre real de tu carpeta
-    npm install
-    npm run dev
-    ```
-
-### Acceso a la API
-Una vez que el servidor esté corriendo, puedes consultar la documentación de los endpoints en:
-`http://localhost:8080/swagger-ui/index.html`
-
-### Ejecutar la Aplicación
-
-Una vez configurada la base de datos, puedes ejecutar la aplicación:
-
-**Modo desarrollo:**
 ```bash
-npm run dev
+
+git clone [https://github.com/piolin666satan/biblioteca-digital-grupo-6.git](https://github.com/piolin666satan/biblioteca-digital-grupo-6.git)
+
+```
+
+### 2. Entrar al directorio
+
+Accede a la carpeta raíz del proyecto antes de ejecutar cualquier comando de configuración:
+
+cd biblioteca-digital-grupo-6
+
+### 3. Configurar la Base de Datos
+
+Para que Spring Boot 3.2.5 gestione la persistencia, debes configurar el archivo src/main/resources/application.properties. A continuación se presentan los dos escenarios requeridos:
+
+Escenario A: Configuración para PostgreSQL (Producción/Local)
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/alquimia_db
+spring.datasource.username=tu_usuario
+spring.datasource.password=tu_contraseña
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+Escenario B: Configuración para H2 (Base de datos en memoria para pruebas)
+
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.h2.console.enabled=true
+
+### 4. Ejecutar la Aplicación
+
+Una vez configurada la base de datos, compila y ejecuta el backend utilizando el Wrapper de Maven incluido en el proyecto:
+
+# En sistemas Unix/Linux/macOS:
+
+./mvnw spring-boot:run
+
+# En sistemas Windows:
+
+mvnw.cmd spring-boot:run
+Nota: El servidor se iniciará por defecto en el puerto 8080. Puedes verificar que la API está activa accediendo a la documentación de Swagger en http://localhost:8080/swagger-ui/index.html.
