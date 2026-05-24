@@ -1,0 +1,48 @@
+1. Validación de Endpoints (Postman)
+Se realizaron pruebas exitosas de integración para la creación de registros,
+confirmando que las validaciones de Spring Boot (@NotNull, @NotBlank)
+y el mapeo de DTOs funcionan correctamente.
+
+POST / Compras: * Se validó que el sistema bloquea peticiones incompletas (Error 400).
+
+Se confirmó que el JSON debe incluir estrictamente proveedor y monto para coincidir con la entidad
+
+
+POST / Préstamos: * Se sincronizó la nomenclatura del JSON con el PrestamoCreateDTO.
+
+Se validó la recepción del campo diaPrestamo (en singular) para que el servicio calcule automáticamente la fechaDevolucionEsperada.
+
+El sistema recupera exitosamente el nombreCliente y tituloLibro de la base de datos para la respuesta.
+
+2. Actualización de DTOs
+
+2. Actualización de DTOs
+Se modificó el objeto de transferencia de datos del Cliente para soportar el flujo de autenticación y registro.
+
+Archivo modificado: ClienteDTO.java
+
+Cambios aplicados:
+
+Se añadió el atributo password de tipo String.
+
+Se documentó el nuevo campo con las anotaciones @Schema de Swagger (description, example, requiredMode).
+
+Se incluyó la validación @NotBlank
+(message = "La contraseña es obligatoria") para asegurar que no lleguen nulos a la base de datos.
+
+
+3. Ajustes en la Lógica de Negocio (Service)
+Se corrigió un error 500 (null value in column "password") ajustando el mapeo manual entre el DTO y la Entidad en la implementación del servicio.
+
+Archivo modificado: ClienteServiceImpl.java
+
+Cambios en mapearEntidad() (Entrada de datos):
+
+Se agregó la lógica para capturar la contraseña enviada desde el frontend/Postman: entidad.setPassword(dto.getPassword());.
+
+(Nota de desarrollo: Se desactivó temporalmente el passwordEncoder.encode() para propósitos de pruebas locales y visualización del flujo de datos en texto plano).
+
+Cambios en mapearDTO() (Salida de datos):
+
+Se agregó la línea dto.setPassword(entidad.getPassword()); para permitir
+que el JSON de respuesta devuelva la contraseña y confirmar su persistencia en PostgreSQL.

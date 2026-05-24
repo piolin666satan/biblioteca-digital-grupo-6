@@ -1,5 +1,7 @@
 package com.grupo6.biblioteca_digital.model.dto;
 
+import com.grupo6.biblioteca_digital.Enums.EstadoLibro;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
@@ -33,11 +35,11 @@ public class LibroDTO {
     private Double precio;
 
     @Schema(description = "Estado del libro", example = "true", accessMode = Schema.AccessMode.READ_ONLY)
-    private Boolean estado;
+    private EstadoLibro estado; //primer error encontrado se esta declarando esta variable como boolean, pero en la entidad se esta utilizando un enum
 
-    @NotBlank(message = "La categoría es obligatoria")
+    @NotNull(message = "La categoría es obligatoria")
     @Schema(description = "Categoría del libro", example = "Terror", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String categoria;
+    private Long categoriaId;
 
     @Schema(description = "Autor del libro", example = "Bram Stoker")
     private String autor;

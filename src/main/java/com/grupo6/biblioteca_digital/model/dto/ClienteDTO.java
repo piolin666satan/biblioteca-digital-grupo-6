@@ -1,5 +1,6 @@
 package com.grupo6.biblioteca_digital.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.grupo6.biblioteca_digital.Enums.TipoIdentidad;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
@@ -41,4 +42,8 @@ public class ClienteDTO {
 
     @Schema(description = "Teléfono del cliente", example = "555-1234")
     private String telefono;
+
+    @NotBlank(message = "La contraseña es obligatoria")
+    @Schema(description = "Contraseña del cliente", example = "MiClaveSecreta123", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String password;
 }
