@@ -116,6 +116,7 @@ public class ClienteServiceImpl implements ClienteService {
             dto.setTelefono(entidad.getContacto().getTelefono());
             dto.setDireccion(entidad.getContacto().getDireccion());
         }
+        dto.setPassword(entidad.getPassword());
         return dto;
     }
 
@@ -131,6 +132,12 @@ public class ClienteServiceImpl implements ClienteService {
         con.setTelefono(dto.getTelefono());
         con.setDireccion(dto.getDireccion());
         entidad.setContacto(con);
+
+// CÓDIGO MODIFICADO: Pasamos la contraseña tal cual, sin el encoder
+        if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+            entidad.setPassword(dto.getPassword()); 
+        }
+
         return entidad;
     }
 }

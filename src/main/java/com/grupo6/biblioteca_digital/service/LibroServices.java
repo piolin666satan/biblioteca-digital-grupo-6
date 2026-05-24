@@ -78,24 +78,15 @@ public class LibroServices {
             throw new BadRequestException("La cantidad debe ser mayor a 0");
         }
 
-        if (libroDTO.getCategoria() == null || libroDTO.getCategoria().isBlank()) {
+        if (libroDTO.getCategoriaId() == null) {
             throw new BadRequestException("La categoría es obligatoria");
         }
 
         // ========= BUSCAR O CREAR CATEGORIA =========
 
         CategoriaEntity categoria = categoriaRepository
-                .findByNombre(libroDTO.getCategoria())
-                .orElseGet(() -> {
-
-                    CategoriaEntity nuevaCategoria = new CategoriaEntity();
-
-                    nuevaCategoria.setNombre(libroDTO.getCategoria());
-
-                    nuevaCategoria.setDescripcion("Categoría creada automáticamente");
-
-                    return categoriaRepository.save(nuevaCategoria);
-                });
+                .findById(libroDTO.getCategoriaId())
+                .orElseThrow(() -> new IllegalArgumentException("La categoría con el ID " + libroDTO.getCategoriaId() + " no existe."));
 
         // ========= VALIDAR DUPLICADOS =========
 
@@ -138,24 +129,16 @@ public class LibroServices {
                         new ResourceNotFoundException("Libro no encontrado"));
 
         libro.setTitulo(libroDTO.getTitulo());
-
+        libro.setAutor(libroDTO.getAutor());
         libro.setCantidad(libroDTO.getCantidad());
-
+        libro.setIsbn(libroDTO.getIsbn());
         libro.setPrecio(libroDTO.getPrecio());
+        libro.setEditorial(libroDTO.getEditorial()); //agrego editorial, autor y isbn a la actualización, ya que se encuentran en el DTO pero no se estaban actualizando en la entidad, se agregan estas líneas para que se actualicen correctamente al momento de realizar una actualización de un libro existente
 
         // Buscar categoría
         CategoriaEntity categoria = categoriaRepository
-                .findByNombre(libroDTO.getCategoria())
-                .orElseGet(() -> {
-
-                    CategoriaEntity nueva = new CategoriaEntity();
-
-                    nueva.setNombre(libroDTO.getCategoria());
-
-                    nueva.setDescripcion("Categoría creada automáticamente");
-
-                    return categoriaRepository.save(nueva);
-                });
+                .findById(libroDTO.getCategoriaId())
+                .orElseThrow(() -> new IllegalArgumentException("La categoría con el ID " + libroDTO.getCategoriaId() + " no existe."));
 
         libro.setCategoria(categoria);
 
@@ -186,6 +169,8 @@ public class LibroServices {
 
         entity.setPrecio(dto.getPrecio());
 
+        entity.setEditorial(dto.getEditorial());
+
         entity.setCategoria(categoria);
 
         return entity;
@@ -202,16 +187,21 @@ private LibroDTO toDTO(LibroEntity entity) {
 
     dto.setTitulo(entity.getTitulo());
 
+    dto.setAutor(entity.getAutor());
+
+    dto.setIsbn(entity.getIsbn());
+
     dto.setCantidad(entity.getCantidad());
 
     dto.setPrecio(entity.getPrecio());
 
-    dto.setEstado(entity.getEstado() == com.grupo6.biblioteca_digital.Enums.EstadoLibro.DISPONIBLE);
+    dto.setEstado(entity.getEstado());
 
-    dto.setCategoria(entity.getCategoria().getNombre());
+    dto.setCategoriaId(entity.getCategoria().getId());
 
     dto.setEditorial(entity.getEditorial());
 
     return dto;
 }
+//errores encontrados, se agregan los campos autor, isbn y editorial al método toDTO para que se mapeen correctamente al momento de convertir una entidad a DTO, ya que estos campos se encuentran en la entidad pero no se estaban incluyendo en el DTO, se agregan estas líneas para que se muestren correctamente al listar o buscar libros por ID
 }

@@ -36,7 +36,7 @@ public class LibroEntity extends BaseEntity{
 
     @ManyToOne
     @JoinColumn(name = "categoria_id", nullable=false)
-    private CategoriaEntity categoria;
+    private CategoriaEntity categoria; //error encontrado, estaba en String al momento de crear la entidad, se cambio a CategoriaEntity para establecer la relación
 
 
     public void actualizarDisponibilidad() {
