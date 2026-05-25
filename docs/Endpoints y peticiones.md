@@ -105,3 +105,5 @@
 - Todas las rutas siguen el prefijo base `/api`
 - Las respuestas están pensadas para integrarse fácilmente con frontend en React
 - Validar siempre los datos antes de enviarlos al backend
+
+cambio
