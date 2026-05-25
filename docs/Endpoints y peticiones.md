@@ -59,10 +59,14 @@ Crea un nuevo libro. Asume que el ID de la categoría ya creada es `1`.
  
 ```json
 {
-  "titulo": "El Aleph",
-  "autor": "Jorge Luis Borges",
-  "isbn": "978-0123456789",
-  "categoriaId": 1
+  "titulo": "Meridiano de sangre",
+  "autor": "Mc Macarty",
+  "isbn": "978-123468958",
+  "editorial": "Debolsillo",
+  "estado": "DISPONIBLE",
+  "precio": 35000.0,
+  "cantidad": 1,
+  "categoriaId": 1 
 }
 ```
  
@@ -77,10 +81,14 @@ Obtiene un libro por su ID.
 ```json
 {
   "id": 2,
-  "titulo": "El Aleph",
-  "autor": "Jorge Luis Borges",
-  "isbn": "978-0123456789",
-  "categoriaNombre": "Ciencia Ficción"
+  "titulo": "Meridiano de sangre",
+  "autor": "Mc Macarty",
+  "isbn": "978-123468958",
+  "editorial": "Debolsillo",
+  "estado": "DISPONIBLE",
+  "precio": 35000.0,
+  "cantidad": 1,
+  "categoriaId": 1 
 }
 ```
  
@@ -103,7 +111,7 @@ Registra un nuevo cliente.
   "email": "prueba12347@gmail.com",
   "direccion": "Calle 123 #45-69",
   "telefono": "588-1234",
-  "password": "MiClaveSuperSecreta123"
+  "password": "Password12368!"
 }
 ```
  
@@ -121,8 +129,11 @@ Registra una nueva compra a proveedor.
  
 ```json
 {
-  "proveedor": "Editorial Planeta",
-  "monto": 45000.50
+  "clienteId": 1,
+  "libroId": 2,
+  "cantidad": 5,
+  "proveedor": "Editorial Emecé S.A.",
+  "monto": 175000.0
 }
 ```
  
