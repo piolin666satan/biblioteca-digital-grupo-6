@@ -164,5 +164,5 @@ Registra un nuevo préstamo.
 | 1    | Categorías | Ninguna                   |
 | 2    | Libros     | Categorías                |
 | 3    | Clientes   | Ninguna                   |
-| 4    | Compras    | Ninguna                   |
+| 4    | Compras    | Clientes + Libros         |
 | 5    | Préstamos  | Clientes + Libros         |
