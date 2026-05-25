@@ -33,7 +33,8 @@ public class SecurityConfig {
                     "/swagger-ui/**",
                     "/v3/api-docs/**",
                     "/docs/**",
-                    "/actuator/**"
+                    "/actuator/**",
+                    "/scalar.html"
                 ).permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/clientes/registro").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("CLIENTE", "ADMIN")
