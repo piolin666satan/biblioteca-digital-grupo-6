@@ -1,42 +1,141 @@
-# 📚 Catálogo de Peticiones API - Alquimia Literaria
-
+# 📚 Catálogo de Peticiones API — Alquimia Literaria
+ 
 ---
-
-## 1. 🛒 Compras
-
-> **Nota:** Estructura base validada para evitar el Error 400 por campos incompletos.
-
-### ➤ POST `/api/compras`  
-**Crear una compra**
-
+ 
+## Árbol de Dependencias
+ 
+```
+Categorías
+    └── Libros
+            └── Préstamos
+Clientes ──────┘
+Compras (independiente)
+```
+ 
+> Un nivel superior debe existir antes de que el inferior pueda crearse.
+ 
+---
+ 
+## 1. Módulo de Categorías
+ 
+> Entidad padre. No depende de ningún otro módulo.
+ 
+### `POST /api/categorias`
+ 
+Crea una nueva categoría.
+ 
+```json
+{
+  "nombre": "Ciencia Ficción",
+  "descripcion": "Libros sobre futuros posibles y tecnología"
+}
+```
+ 
+---
+ 
+### `GET /api/categorias/{id}`
+ 
+Obtiene una categoría por su ID.
+ 
+**Respuesta:**
+ 
+```json
+{
+  "id": 1,
+  "nombre": "Ciencia Ficción",
+  "descripcion": "Libros sobre futuros posibles y tecnología"
+}
+```
+ 
+---
+ 
+## 2. Módulo de Libros
+ 
+> Depende de la existencia previa de una **Categoría**.
+ 
+### `POST /api/libros`
+ 
+Crea un nuevo libro. Asume que el ID de la categoría ya creada es `1`.
+ 
+```json
+{
+  "titulo": "El Aleph",
+  "autor": "Jorge Luis Borges",
+  "isbn": "978-0123456789",
+  "categoriaId": 1
+}
+```
+ 
+---
+ 
+### `GET /api/libros/{id}`
+ 
+Obtiene un libro por su ID.
+ 
+**Respuesta:**
+ 
+```json
+{
+  "id": 2,
+  "titulo": "El Aleph",
+  "autor": "Jorge Luis Borges",
+  "isbn": "978-0123456789",
+  "categoriaNombre": "Ciencia Ficción"
+}
+```
+ 
+---
+ 
+## 3. Módulo de Clientes
+ 
+> Entidad independiente. Creados para interactuar con el sistema.
+ 
+### `POST /api/clientes`
+ 
+Registra un nuevo cliente.
+ 
+```json
+{
+  "nombre": "derek",
+  "apellido": "naelson",
+  "tipoIdentidad": "CEDULA",
+  "numeroIdentidad": "13456770",
+  "email": "prueba12347@gmail.com",
+  "direccion": "Calle 123 #45-69",
+  "telefono": "588-1234",
+  "password": "MiClaveSuperSecreta123"
+}
+```
+ 
+> ⚠️ El campo `password` debe ser encriptado antes de almacenarse en base de datos.
+ 
+---
+ 
+## 4. Módulo de Compras
+ 
+> Ingreso de inventario. Entidad independiente.
+ 
+### `POST /api/compras`
+ 
+Registra una nueva compra a proveedor.
+ 
 ```json
 {
   "proveedor": "Editorial Planeta",
   "monto": 45000.50
 }
 ```
-
-### ➤ GET `/api/compras/{id}`  
-**Ejemplo de respuesta esperada**
-
-```json
-{
-  "id": 1,
-  "proveedor": "Editorial Planeta",
-  "monto": 45000.50,
-  "fechaCompra": "2026-05-24T12:00:00"
-}
-```
-
+ 
 ---
-
-## 2. 📖 Préstamos
-
-> **Nota:** Ajustado para usar `diaPrestamo` y permitir que el backend calcule las fechas automáticamente.
-
-### ➤ POST `/api/prestamos`  
-**Crear un préstamo**
-
+ 
+## 5. Módulo de Préstamos
+ 
+> Eslabón final. Depende de **Clientes** y **Libros**.
+ 
+### `POST /api/prestamos`
+ 
+Registra un nuevo préstamo.
+ 
 ```json
 {
   "clienteId": 1,
@@ -44,66 +143,15 @@
   "diaPrestamo": 7
 }
 ```
-
-### ➤ GET `/api/prestamos/1`  
-**Respuesta con datos relacionales listos para React**
-
-```json
-{
-  "id": 1,
-  "nombreCliente": "Administrador Sistema",
-  "tituloLibro": "El Aleph",
-  "fechaSalida": "2026-05-24T13:11:17.5820715",
-  "fechaDevolucionEsperada": "2026-05-31T13:11:17.5820715",
-  "estado": "ACTIVO"
-}
-```
-
+ 
 ---
-
-## 3. 👤 Clientes
-
-> **Nota:** Incluye la variable temporal de `password` visible para pruebas locales.
-
-### ➤ POST `/api/clientes`  
-**Registrar un cliente nuevo**
-
-```json
-{
-  "nombre": "derek",
-  "apellido": "naelson",
-  "tipoIdentidad": "CEDULA",
-  "numeroIdentidad": "13456770",
-  "email": "prueba12347@gmail.com",
-  "direccion": "Calle 123 #45-69",
-  "telefono": "588-1234",
-  "password": "MiClaveSuperSecreta123"
-}
-```
-
-### ➤ GET `/api/clientes/7`  
-**Respuesta mapeada incluyendo el password crudo**
-
-```json
-{
-  "id": 7,
-  "nombre": "derek",
-  "apellido": "naelson",
-  "tipoIdentidad": "CEDULA",
-  "numeroIdentidad": "13456770",
-  "email": "prueba12347@gmail.com",
-  "direccion": "Calle 123 #45-69",
-  "telefono": "588-1234",
-  "password": "MiClaveSuperSecreta123"
-}
-```
-
----
-
-## 🚀 Notas Finales
-
-- Todas las rutas siguen el prefijo base `/api`
-- Las respuestas están pensadas para integrarse fácilmente con frontend en React
-- Validar siempre los datos antes de enviarlos al backend
-
-cambio
+ 
+## 💡 Orden de creación recomendado
+ 
+| Paso | Módulo     | Dependencia previa        |
+|------|------------|---------------------------|
+| 1    | Categorías | Ninguna                   |
+| 2    | Libros     | Categorías                |
+| 3    | Clientes   | Ninguna                   |
+| 4    | Compras    | Ninguna                   |
+| 5    | Préstamos  | Clientes + Libros         |
